@@ -1,6 +1,8 @@
 let myLibrary = [];
 let i = 0;
 const UPLOADBOOK = document.querySelector(".upload-book");
+const SUBMITFORM = document.getElementById("upload-book");
+const SUBMITBUTTON = document.getElementById("submit-book");
 const CREATEBOOKWINDOW = document.querySelector(".create-book-window");
 const CREATEBOOKBTN = document.querySelector(".create-book");
 const LIBRARY = document.querySelector(".library");
@@ -8,54 +10,20 @@ const BOOKCARDS = document.querySelector(".book-cards");
 
 // CREATEBOOKWINDOW.addEventListener("click", createBookObject);
 // ADDBOOK.addEventListener("click", addBookToMyLibrary);
-CREATEBOOKBTN.addEventListener("click", createBookWindow);
+CREATEBOOKBTN.addEventListener("click", showSubmitWindow);
+SUBMITBUTTON.addEventListener("click", () => {
+    submitBook();
+    createBookCard(i);
+    i++;
+    UPLOADBOOK.classList.toggle("active");
+});
 
-function createInput(cls, type, id, placeholder = "") {
-  const input = document.createElement("input");
-  input.class = cls;
-  input.type = type;
-  input.id = id;
-  input.placeholder = placeholder;
-  input.required = 'required';
+function showSubmitWindow() {
 
-  return input
-}
+  SUBMITFORM.reset();
 
+  UPLOADBOOK.classList.toggle("active");
 
-function createBookWindow() {
-  const popup = document.createElement("div");
-  const read = document.createElement("div");
-  const submitButton = document.createElement("button");
-  const readNotice = document.createElement("p");
-
-  const titleInput = createInput("input", "text", "title", "Title");
-  const authInput = createInput("input", "text", "author", "Author");
-  const pagInput = createInput("input", "number", "pages", "Pages");
-  const readInput = createInput("checkbox", "checkbox", "isRead");
-
-  popup.classList.add("upload-book");
-
-  submitButton.type = "button";
-  submitButton.name = "submit";
-  submitButton.id = "submitBook";
-  submitButton.innerText = "Submit";
-  readNotice.innerText = "Already read? "
-
-  LIBRARY.appendChild(popup);
-  popup.appendChild(titleInput);
-  popup.appendChild(authInput);
-  popup.appendChild(pagInput);
-  popup.appendChild(read);
-  read.appendChild(readNotice);
-  read.appendChild(readInput);
-  popup.appendChild(submitButton);
-
-  submitButton.addEventListener("click", () => {
-      submitBook();
-      createBookCard(i);
-      i++;
-      deleteBookWindow();
-    });
 }
 
 function createBookCard(i) {
@@ -92,7 +60,7 @@ function createBookCard(i) {
       readContainer.innerText = "In to-read list";
     }
 
-    changeReadSlider.read = book.read;
+    readState = book.read;
 
     let cardElements = [titleContainer, authorContainer, pagesContainer, readContainer, changeReadSlider, deleteButton];
 
@@ -132,6 +100,8 @@ function deleteBookCard(position) {
   BookCard.remove();
 
 }
+
+function toggleRead() {}
 
 function deleteBook(position) {
   myLibrary.splice(position, 1);
