@@ -1,0 +1,225 @@
+* {
+  background-color: #212121;
+  color: white;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+body::-webkit-scrollbar {
+  width: .5rem;
+}
+
+body::-webkit-scrollbar-track{
+  background: #181818;
+}
+
+body::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.16);
+}
+
+header {
+  height: 4rem;
+  width: 100vh;
+  display: flex;
+  margin-left: auto;
+}
+
+header:last-child {
+  margin-left: auto;
+}
+
+.page-title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.library {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 2rem;
+  height: 100vh;
+}
+
+.create-book {
+  font-size: 26px;
+  width: 10rem;
+  height: 4rem;
+  background-color: rgb(240,173,185);
+  border: none;
+  box-shadow: 0px 3px 1px 1px rgb(0 0 0 / 8%),
+              0px 2px 2px 0px rgb(0 0 0 / 16%);
+  margin-left: auto;
+}
+
+.create-book:hover {
+  background: rgba(240,173,185, 0.05);
+  /* background-color: rgba(255,255,255,0.05); */
+  border-color: rgba(255,255,255, 0.04);
+  cursor: pointer;
+}
+
+.upload-book {
+  position: absolute;
+  left: 40%;
+  top: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 11rem;
+  height: 12rem;
+  background-color: rgba(0,0,0,0.9);
+  border-radius: 8px;
+  box-shadow: 0 2px 2px 0
+              rgb(255 255 255 / 16%), 0 0 0 1px
+              rgb(255 255 255 / 8%);
+
+}
+
+.upload-book > button {
+  font-size: 16px;
+  width: 4rem;
+  height: 2rem;
+  box-shadow: 0px 3px 1px 1px rgb(0 0 0 / 8%),
+              0px 2px 2px 0px rgb(0 0 0 / 16%);
+  background-color: rgba(255,255,255,0.1);
+  border: none;
+}
+
+.upload-book > div {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  background-color: rgba(255,255,255,0);
+  height: 1rem;
+}
+
+.upload-book > div > p {
+  background-color: rgba(255,255,255,0);
+
+}
+
+.book-cards {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+}
+
+.card {
+  width: 175px;
+  height: 300px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  box-shadow: 0 2px 2px 0 rgb(255 255 255 / 16%),
+              0 2px 0 1px rgb(255 255 255 / 8%);
+}
+
+.card > h2 {
+  background-color: rgba(255,255,255,0);
+}
+
+.card > p {
+  background-color: rgba(255,255,255,0);
+}
+
+.change-read-status {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.change-read-status input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+#title {
+  background-color: rgba(255,255,255,0.06);
+  border: none;
+  font-size: 20px;
+  width: 10rem;
+}
+
+#author {
+  background-color: rgba(255,255,255,0.06);
+  border: none;
+  font-size: 20px;
+  width: 10rem;
+}
+
+#pages {
+  background-color: rgba(255,255,255,0.06);
+  border: none;
+  font-size: 20px;
+  width: 10rem;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
