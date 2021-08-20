@@ -64,6 +64,7 @@ header:last-child {
 }
 
 .upload-book {
+  visibility: hidden;
   position: absolute;
   left: 40%;
   top: 30%;
@@ -81,7 +82,19 @@ header:last-child {
 
 }
 
-.upload-book > button {
+.upload-book > form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 11rem;
+  height: 12rem;
+  background-color: rgba(0,0,0,0);
+  border-radius: 8px;
+  margin-top: 0;
+}
+
+.upload-book > form > button {
   font-size: 16px;
   width: 4rem;
   height: 2rem;
@@ -89,9 +102,10 @@ header:last-child {
               0px 2px 2px 0px rgb(0 0 0 / 16%);
   background-color: rgba(255,255,255,0.1);
   border: none;
+  cursor: pointer;
 }
 
-.upload-book > div {
+.upload-book > form > div {
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -99,7 +113,7 @@ header:last-child {
   height: 1rem;
 }
 
-.upload-book > div > p {
+.upload-book > form > div > p {
   background-color: rgba(255,255,255,0);
 
 }
@@ -191,6 +205,10 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.active {
+  visibility: visible;
 }
 
 #title {
