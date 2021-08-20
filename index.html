@@ -18,7 +18,6 @@
     </header>
 
     <div class="library">
-      <!-- <button class="create-book" type="button" name="button">Add a book</button> -->
       <div class="book-cards">
 
       </div>
@@ -28,6 +27,22 @@
     <footer>
       <p>Copyright © Carlos Cabrera &nbsp;</p><a href="https://github.com/carloscrmrz" target="_blank"><img src="media/GitHubLogo.png" alt="github logo"></a>
     </footer>
+
+
+    <div class="upload-book">
+      <form id="upload-book">
+        <input type="text" id="title" placeholder="Title" required>
+        <input type="text" id="author" placeholder="Author" required>
+        <input type="number" id="pages" placeholder="Pages" required>
+        <div>
+          <p>Already read? </p>
+          <input type="checkbox" id="isRead" placeholder required>
+        </div>
+
+        <button type="button" name="submit" id="submit-book">Submit</button>
+
+      </form>
+    </div>
 
     <script src='scripts.js'></script>
   </body>
