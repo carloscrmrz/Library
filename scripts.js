@@ -3,14 +3,13 @@ let i = 0;
 const UPLOADBOOK = document.querySelector(".upload-book");
 const SUBMITFORM = document.getElementById("upload-book");
 const SUBMITBUTTON = document.getElementById("submit-book");
-const CREATEBOOKWINDOW = document.querySelector(".create-book-window");
 const CREATEBOOKBTN = document.querySelector(".create-book");
 const LIBRARY = document.querySelector(".library");
 const BOOKCARDS = document.querySelector(".book-cards");
+// const TOGGLEREADBUTTON = document.querySelector(".toggle-read");
 
-// CREATEBOOKWINDOW.addEventListener("click", createBookObject);
-// ADDBOOK.addEventListener("click", addBookToMyLibrary);
 CREATEBOOKBTN.addEventListener("click", showSubmitWindow);
+
 SUBMITBUTTON.addEventListener("click", () => {
     submitBook();
     createBookCard(i);
@@ -30,6 +29,7 @@ function createBookCard(i) {
     const book = myLibrary[i];
 
     const changeReadSlider = document.createElement("button");
+    changeReadSlider.classList.add("toggle-read");
     changeReadSlider.dataset.position = i;
 
     const deleteButton = document.createElement("button");
@@ -60,9 +60,14 @@ function createBookCard(i) {
       readContainer.innerText = "In to-read list";
     }
 
+    const funkyButtons = document.createElement("div");
+    funkyButtons.classList.add("function-buttons");
+    funkyButtons.appendChild(changeReadSlider);
+    funkyButtons.appendChild(deleteButton);
+
     readState = book.read;
 
-    let cardElements = [titleContainer, authorContainer, pagesContainer, readContainer, changeReadSlider, deleteButton];
+    let cardElements = [titleContainer, authorContainer, pagesContainer, readContainer, funkyButtons];
 
     cardElements.forEach((element) => {
       card.appendChild(element);
@@ -70,17 +75,22 @@ function createBookCard(i) {
 
     BOOKCARDS.appendChild(card);
 
+    changeReadSlider.addEventListener('click', (e) => {
+      const position = parseInt(e.target.dataset.position);
+      toggleRead(position);
+
+      if (book.read) {
+        readContainer.innerText = "You've already read this book";
+      } else {
+        readContainer.innerText = "In to-read list";
+      }
+    });
+
     deleteButton.addEventListener('click', (e) => {
       const position = e.target.dataset.position;
       deleteBookCard(position);
       deleteBook(position);
     });
-}
-
-function deleteBookWindow() {
-  const window = document.querySelector(".upload-book");
-
-  window.remove()
 }
 
 function submitBook() {
@@ -101,8 +111,6 @@ function deleteBookCard(position) {
 
 }
 
-function toggleRead() {}
-
 function deleteBook(position) {
   myLibrary.splice(position, 1);
   i--;
@@ -116,6 +124,11 @@ function Books(title, author, pages, read, pos) {
   this.position = pos;
 }
 
-Books.prototype.toggleRead = function() {
-    this.read = !this.read;
+const toggleRead = function(position) {
+    var _FOUND = myLibrary.find(function(book,index) {
+      if (book.position === position) {
+          return true
+      }});
+      
+    myLibrary[position].read = !myLibrary[position].read;
 }
