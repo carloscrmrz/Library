@@ -207,6 +207,23 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+.function-buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.delete-book {
+  background-color: red;;
+}
+
+.read-toggle {
+  background-color: red;
+}
+
+.alredy-read {
+  background-color: green;
+}
+
 .active {
   visibility: visible;
 }
