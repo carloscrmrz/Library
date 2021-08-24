@@ -216,7 +216,7 @@ input:checked + .slider:before {
   background-color: red;;
 }
 
-.read-toggle {
+.toggle-read {
   background-color: red;
 }
 
