@@ -45,21 +45,20 @@ const deleteBook = (position) => {
 }
 
 const Book = (title, author, pages, read, pos) => {
-  let pagesRead = undefined;
-
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.read = read;
   this.position = pos;
 
-  const getInitialPagesRead = (pgs) =>  {
+  const pagesRead = (() =>  {
     if (read) {
-      return pages
+      return parseInt(pages)
     } else {
       return 0
     }
-  }
+  })();
+
 // This method creates automatically the card container to append into the HTML library div
 const card = (() => {
     const card = document.createElement("div");
@@ -146,5 +145,5 @@ const card = (() => {
     return card
   })();
 
-  return {pos, card, read}
+  return {pos, card, read, pagesRead}
 }
