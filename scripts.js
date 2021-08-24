@@ -11,6 +11,7 @@ const BOOKCARDS = document.querySelector(".book-cards");
 CREATEBOOKBTN.addEventListener("click", showSubmitWindow);
 
 SUBMITBUTTON.addEventListener("click", () => {
+
     const book = submitBook()
     BOOKCARDS.appendChild(book.card);
     i++;
@@ -77,7 +78,7 @@ const card = (() => {
     card.dataset.position = pos;
 
     // TITLE
-    if (this.title === undefined) return
+    if (title === undefined) return
     titleContainer.innerText = title;
 
     // AUTHOR
@@ -97,11 +98,11 @@ const card = (() => {
 
     // TOGGLE READ STATE
     toggleReadState.dataset.position = card.dataset.position;
+    toggleReadState.classList.add("toggle-read")
     if (read) {
-      toggleReadState.style.backgroundColor = "green";
+      toggleReadState.classList.toggle("already-read");
       toggleReadState.innerText = "READ";
     } else {
-      toggleReadState.style.backgroundColor = "red"
       toggleReadState.innerText = "NOT READ YET";
     }
 
@@ -127,11 +128,11 @@ const card = (() => {
 
       if (myLibrary[position].read) {
         readContainer.innerText = "You've already read this book";
-        e.target.style.backgroundColor = "green";
+        e.target.classList.toggle("already-read");
         e.target.innerText = "READ";
       } else {
         readContainer.innerText = "In to-read list";
-        e.target.style.backgroundColor = "red";
+        e.target.classList.toggle("already-read");
         e.target.innerText = "NOT READ YET";
       }
 
