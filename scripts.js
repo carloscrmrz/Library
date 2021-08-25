@@ -23,6 +23,25 @@ function showSubmitWindow() {
   UPLOADBOOK.classList.toggle("active");
 }
 
+// function toggleReadStateIcon(read) {
+//   const svgContainer = document.createElement("span");
+//   const faBook = document.createElement("i");
+//   faBook.classList.add("fas", "fa-book", "fa-xs", "fa-stack-1x");
+//   faBook.style = "background: rgba(0,0,0,0);";
+//   const faBan = document.createElement("i");
+//   faBan.classList.add("fas", "fa-ban", "fa-xs", "fa-stack-2x");
+//   faBan.style = "color:Tomato; background: rgba(0,0,0,0)";
+//
+//   if (read) {
+//     svgContainer.appendChild(faBook);
+//   } else {
+//     svgContainer.appendChild(faBook);
+//     svgContainer.appendChild(faBan);
+//   }
+//
+//   return svgContainer
+// }
+
 function submitBook() {
     const titleInput = document.getElementById('title');
     const authorInput = document.getElementById('author');
@@ -63,14 +82,27 @@ const Book = (title, author, pages, read, pos) => {
 // This method creates automatically the card container to append into the HTML library div
 const card = (() => {
     const card = document.createElement("div");
-    const toggleReadState = document.createElement("button");
-    const deleteButton = document.createElement("button");
+    const toggleReadState = document.createElement("div");
+    const deleteButton = document.createElement("div");
     const titleContainer = document.createElement("h2");
     const authorContainer = document.createElement("h2");
     const pagesContainer = document.createElement("p");
     const funkyButtons = document.createElement("div");
+    let svgToggleReadState = document.createElement("span");
+    let svgDeleteButton = document.createElement("span");
     let readContainer = document.createElement("p");
     let cardElements = [titleContainer, authorContainer, pagesContainer, readContainer, funkyButtons];
+
+
+    const faBook = document.createElement("i");
+    faBook.classList.add("fas", "fa-book", "fa-xs", "fa-stack-1x");
+    faBook.style = "background: rgba(0,0,0,0);";
+    const faBan = document.createElement("i");
+    faBan.classList.add("fas", "fa-ban", "fa-xs", "fa-stack-2x");
+    faBan.style = "color:Tomato; background: rgba(0,0,0,0)";
+    const faTrash = document.createElement("i");
+    faTrash.classList.add("fas", "fa-trash-alt", "fa-xs");
+    faTrash.style = "color: Tomato;background: rgba(0,0,0,0)";
 
     // After creating the necessary elements for the card we add their respective CSS styles.
     // CARD
@@ -98,18 +130,25 @@ const card = (() => {
 
     // TOGGLE READ STATE
     toggleReadState.dataset.position = card.dataset.position;
-    toggleReadState.classList.add("toggle-read")
+    toggleReadState.classList.add("toggle-read");
+    svgToggleReadState.classList.add("fa-stack","fa-2x", "toggle-read");
+
     if (read) {
-      toggleReadState.classList.toggle("already-read");
-      toggleReadState.innerText = "READ";
+      svgToggleReadState.appendChild(faBook);
     } else {
-      toggleReadState.innerText = "NOT READ YET";
+      svgToggleReadState.appendChild(faBook);
+      svgToggleReadState.appendChild(faBan);
     }
+
+    toggleReadState.appendChild(svgToggleReadState);
 
     // DELETE BOOK
     deleteButton.dataset.position = card.dataset.position;
     deleteButton.classList.add("delete-book");
-    deleteButton.innerText = "Delete Book";
+    svgDeleteButton.classList.add("delete-book")
+
+    svgDeleteButton.appendChild(faTrash);
+    deleteButton.appendChild(svgDeleteButton);
 
     // THE FUNCTION BUTTON (DELETE BOOK, TOGGLE READ STATE)
     funkyButtons.classList.add("function-buttons");
@@ -122,24 +161,23 @@ const card = (() => {
 
     // WE ADD THE NECESSARY EVENT LISTENERS TO THE FUNCTION buttons
     toggleReadState.addEventListener('click', (e) => {
-      const position = parseInt(e.target.dataset.position);
+      const position = parseInt(e.currentTarget.dataset.position);
 
       myLibrary[position].read = !myLibrary[position].read;
 
-      if (myLibrary[position].read) {
-        readContainer.innerText = "You've already read this book";
-        e.target.classList.toggle("already-read");
-        e.target.innerText = "READ";
-      } else {
-        readContainer.innerText = "In to-read list";
-        e.target.classList.toggle("already-read");
-        e.target.innerText = "NOT READ YET";
-      }
+      // svgToggleReadState.remove();
+      // svgToggleReadState = toggleReadStateIcon(myLibrary[position].read);
+      // toggleReadState.appendChild(svgToggleReadState);
 
-    });
+          if (myLibrary[position].read) {
+            readContainer.innerText = "You've already read this book";
+          } else {
+            readContainer.innerText = "In to-read list";
+          }
+    }, true);
 
     deleteButton.addEventListener('click', (e) => {
-      let position = parseInt(e.target.dataset.position);
+      let position = parseInt(e.currentTarget.dataset.position);
       deleteBook(position);
     });
 
