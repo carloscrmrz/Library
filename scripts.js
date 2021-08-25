@@ -1,5 +1,4 @@
 let myLibrary = [];
-let i = 0;
 const UPLOADBOOK = document.querySelector(".upload-book");
 const SUBMITFORM = document.getElementById("upload-book");
 const SUBMITBUTTON = document.getElementById("submit-book");
@@ -13,7 +12,6 @@ SUBMITBUTTON.addEventListener("click", () => {
 
     const book = submitBook()
     BOOKCARDS.appendChild(book.card);
-    i++;
     UPLOADBOOK.classList.toggle("active");
 });
 
@@ -28,7 +26,7 @@ function submitBook() {
     const pagInput = document.getElementById('pages');
     const isRead = document.getElementById('isRead');
 
-    const book = Book(titleInput.value, authorInput.value, pagInput.value, isRead.checked, i);
+    const book = Book(titleInput.value, authorInput.value, pagInput.value, isRead.checked, randomId());
     myLibrary.push(book);
 
     localStorage.setItem(`localLibrary`, JSON.stringify(myLibrary));
@@ -36,29 +34,37 @@ function submitBook() {
     return book
 }
 
-const deleteBook = (position) => {
+const deleteBook = (id) => {
+  const indexOfBook = myLibrary.findIndex(book => book.id === id);
+
   // THIS SNIPPET DELETES THE CARD
-  const bookCard = document.querySelector(`.card[data-position="${position}"]`);
+  const bookCard = document.querySelector(`.card[data-id="${id}"]`);
   bookCard.remove();
 
-  // THIS SNIPPET DELETES THE BOOK FROM THE LOCAL localStorage
-  localStorage.removeItem(`${myLibrary[position].title}`)
-
   // THIS SNIPPET DELETES THE BOOK FROM THE LIBRARY
-  myLibrary.splice(position, 1);
-  i--;
+  myLibrary.splice(indexOfBook, 1);
 
   // THIS SNIPPET UPDATES THE LOCAL LIBRARY
   localStorage.setItem(`localLibrary`, JSON.stringify(myLibrary));
 
 }
 
-const Book = (title, author, pages, read, pos) => {
+function randomId() {
+  // Convert a random number to base 36 (numbers + letters), and grab the first
+  // 9 characters after the decimal.
+  return `${Math.random().toString(36).substr(2, 9)}`
+};
+
+function getIndexOfBook(id) {
+  myLibrary.indexOf();
+}
+
+const Book = (title, author, pages, read, id) => {
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.read = read;
-  this.position = pos;
+  this.id = id;
 
   const pagesRead = (() =>  {
     if (read) {
@@ -96,7 +102,7 @@ const card = (() => {
     // After creating the necessary elements for the card we add their respective CSS styles.
     // CARD
     card.classList.add("card")
-    card.dataset.position = pos;
+    card.dataset.id = id;
 
     // TITLE
     if (title === undefined) return
@@ -118,7 +124,7 @@ const card = (() => {
     }
 
     // TOGGLE READ STATE
-    toggleReadState.dataset.position = card.dataset.position;
+    toggleReadState.dataset.id = card.dataset.id;
     toggleReadState.classList.add("toggle-read");
     svgToggleReadState.classList.add("fa-stack","fa-2x", "toggle-read");
 
@@ -132,7 +138,7 @@ const card = (() => {
     toggleReadState.appendChild(svgToggleReadState);
 
     // DELETE BOOK
-    deleteButton.dataset.position = card.dataset.position;
+    deleteButton.dataset.id = card.dataset.id;
     deleteButton.classList.add("delete-book");
     svgDeleteButton.classList.add("delete-book")
 
@@ -150,15 +156,15 @@ const card = (() => {
 
     // WE ADD THE NECESSARY EVENT LISTENERS TO THE FUNCTION buttons
     toggleReadState.addEventListener('click', (e) => {
-      const position = parseInt(e.currentTarget.dataset.position);
+      const id = e.currentTarget.dataset.id;
 
-      myLibrary[position].read = !myLibrary[position].read;
+      myLibrary[id].read = !myLibrary[id].read;
 
       // svgToggleReadState.remove();
-      // svgToggleReadState = toggleReadStateIcon(myLibrary[position].read);
+      // svgToggleReadState = toggleReadStateIcon(myLibrary[id].read);
       // toggleReadState.appendChild(svgToggleReadState);
 
-          if (myLibrary[position].read) {
+          if (myLibrary[id].read) {
             readContainer.innerText = "You've already read this book";
           } else {
             readContainer.innerText = "In to-read list";
@@ -166,19 +172,20 @@ const card = (() => {
     }, true);
 
     deleteButton.addEventListener('click', (e) => {
-      let position = parseInt(e.currentTarget.dataset.position);
-      deleteBook(position);
+      let id = e.currentTarget.dataset.id;
+      deleteBook(id);
     });
 
     return card
   })();
 
-  return {title, author, pages, read, pos, card, pagesRead}
+  return {title, author, pages, read, id, card, pagesRead}
 }
 
 // LOCAL STORAGE
 
 function createCardFromLocalStorage() {
+  if (localStorage.length === 0) return
 
   if ( myLibrary.length === 0 ) {
 
@@ -191,9 +198,9 @@ function createCardFromLocalStorage() {
       let author = localBook.author;
       let pages = localBook.pages;
       let read = localBook.read;
-      let pos = localBook.pos;
+      let id = localBook.id;
 
-      const book = Book(title, author, pages, read, pos);
+      const book = Book(title, author, pages, read, id);
       myLibrary.push(book);
       BOOKCARDS.appendChild(book.card);
       }
@@ -202,4 +209,4 @@ function createCardFromLocalStorage() {
   }
 }
 
-i = createCardFromLocalStorage();
+createCardFromLocalStorage();
