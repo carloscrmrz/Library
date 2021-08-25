@@ -7,7 +7,6 @@ const CREATEBOOKBTN = document.querySelector(".create-book");
 const LIBRARY = document.querySelector(".library");
 const BOOKCARDS = document.querySelector(".book-cards");
 
-
 CREATEBOOKBTN.addEventListener("click", showSubmitWindow);
 
 SUBMITBUTTON.addEventListener("click", () => {
@@ -23,25 +22,6 @@ function showSubmitWindow() {
   UPLOADBOOK.classList.toggle("active");
 }
 
-// function toggleReadStateIcon(read) {
-//   const svgContainer = document.createElement("span");
-//   const faBook = document.createElement("i");
-//   faBook.classList.add("fas", "fa-book", "fa-xs", "fa-stack-1x");
-//   faBook.style = "background: rgba(0,0,0,0);";
-//   const faBan = document.createElement("i");
-//   faBan.classList.add("fas", "fa-ban", "fa-xs", "fa-stack-2x");
-//   faBan.style = "color:Tomato; background: rgba(0,0,0,0)";
-//
-//   if (read) {
-//     svgContainer.appendChild(faBook);
-//   } else {
-//     svgContainer.appendChild(faBook);
-//     svgContainer.appendChild(faBan);
-//   }
-//
-//   return svgContainer
-// }
-
 function submitBook() {
     const titleInput = document.getElementById('title');
     const authorInput = document.getElementById('author');
@@ -51,6 +31,8 @@ function submitBook() {
     const book = Book(titleInput.value, authorInput.value, pagInput.value, isRead.checked, i);
     myLibrary.push(book);
 
+    localStorage.setItem(`localLibrary`, JSON.stringify(myLibrary));
+
     return book
 }
 
@@ -59,9 +41,16 @@ const deleteBook = (position) => {
   const bookCard = document.querySelector(`.card[data-position="${position}"]`);
   bookCard.remove();
 
+  // THIS SNIPPET DELETES THE BOOK FROM THE LOCAL localStorage
+  localStorage.removeItem(`${myLibrary[position].title}`)
+
   // THIS SNIPPET DELETES THE BOOK FROM THE LIBRARY
   myLibrary.splice(position, 1);
   i--;
+
+  // THIS SNIPPET UPDATES THE LOCAL LIBRARY
+  localStorage.setItem(`localLibrary`, JSON.stringify(myLibrary));
+
 }
 
 const Book = (title, author, pages, read, pos) => {
@@ -184,5 +173,33 @@ const card = (() => {
     return card
   })();
 
-  return {pos, card, read, pagesRead}
+  return {title, author, pages, read, pos, card, pagesRead}
 }
+
+// LOCAL STORAGE
+
+function createCardFromLocalStorage() {
+
+  if ( myLibrary.length === 0 ) {
+
+    let localLibrary = JSON.parse(localStorage["localLibrary"]);
+    let i = 0;
+
+    for (i; i < localLibrary.length; i++) {
+      let localBook = localLibrary[i];
+      let title = localBook.title;
+      let author = localBook.author;
+      let pages = localBook.pages;
+      let read = localBook.read;
+      let pos = localBook.pos;
+
+      const book = Book(title, author, pages, read, pos);
+      myLibrary.push(book);
+      BOOKCARDS.appendChild(book.card);
+      }
+
+      return i
+  }
+}
+
+i = createCardFromLocalStorage();
