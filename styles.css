@@ -23,12 +23,10 @@ body::-webkit-scrollbar-thumb{
 
 header {
   height: 4rem;
-  width: 100vh;
+  width: 100vw;
   display: flex;
-  margin-left: auto;
-}
-
-header:last-child {
+  align-content: flex-end;
+  justify-content: flex-end;
   margin-left: auto;
 }
 
@@ -36,6 +34,7 @@ header:last-child {
   font-size: 30px;
   font-weight: bold;
   margin-top: 1rem;
+  margin-right: 30%;
 }
 
 .library {
@@ -53,7 +52,9 @@ header:last-child {
   border: none;
   box-shadow: 0px 3px 1px 1px rgb(0 0 0 / 8%),
               0px 2px 2px 0px rgb(0 0 0 / 16%);
-  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .create-book:hover {
@@ -83,6 +84,7 @@ header:last-child {
 }
 
 .upload-book > form {
+  color: white;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -122,6 +124,8 @@ header:last-child {
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  margin-left: 5%;
+  margin-right: 5%;  
 }
 
 .card {
@@ -172,6 +176,7 @@ header:last-child {
 }
 
 #title {
+  color: white;
   background-color: rgba(255,255,255,0.06);
   border: none;
   font-size: 20px;
@@ -179,6 +184,7 @@ header:last-child {
 }
 
 #author {
+  color: white;
   background-color: rgba(255,255,255,0.06);
   border: none;
   font-size: 20px;
@@ -186,6 +192,7 @@ header:last-child {
 }
 
 #pages {
+  color: white;
   background-color: rgba(255,255,255,0.06);
   border: none;
   font-size: 20px;
