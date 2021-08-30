@@ -11,7 +11,7 @@ CREATEBOOKBTN.addEventListener("click", showSubmitWindow);
 SUBMITBUTTON.addEventListener("click", () => {
 
     const book = submitBook()
-    BOOKCARDS.appendChild(book.card);
+    BOOKCARDS.appendChild(book.card());
     UPLOADBOOK.classList.toggle("active");
 });
 
@@ -26,7 +26,7 @@ function submitBook() {
     const pagInput = document.getElementById('pages');
     const isRead = document.getElementById('isRead');
 
-    const book = Book(titleInput.value, authorInput.value, pagInput.value, isRead.checked, randomId());
+    const book = new Book(titleInput.value, authorInput.value, pagInput.value, isRead.checked);
     myLibrary.push(book);
 
     localStorage.setItem(`localLibrary`, JSON.stringify(myLibrary));
@@ -49,33 +49,21 @@ const deleteBook = (id) => {
 
 }
 
-function randomId() {
-  // Convert a random number to base 36 (numbers + letters), and grab the first
-  // 9 characters after the decimal.
-  return `${Math.random().toString(36).substr(2, 9)}`
-};
-
 function getIndexOfBook(id) {
   myLibrary.indexOf();
 }
 
-const Book = (title, author, pages, read, id) => {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-  this.id = id;
+class Book {
 
-  const pagesRead = (() =>  {
-    if (read) {
-      return parseInt(pages)
-    } else {
-      return 0
-    }
-  })();
+  constructor(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+    this.id = `${Math.random().toString(36).substr(2, 9)}`;
+  }
 
-// This method creates automatically the card container to append into the HTML library div
-const card = (() => {
+  card() {
     const card = document.createElement("div");
     const toggleReadState = document.createElement("div");
     const deleteButton = document.createElement("div");
@@ -102,22 +90,22 @@ const card = (() => {
     // After creating the necessary elements for the card we add their respective CSS styles.
     // CARD
     card.classList.add("card")
-    card.dataset.id = id;
+    card.dataset.id = this.id;
 
     // TITLE
-    if (title === undefined) return
-    titleContainer.innerText = title;
+    if (this.title === undefined) return
+    titleContainer.innerText = this.title;
 
     // AUTHOR
     if (this.author === undefined) return
-    authorContainer.innerText = author;
+    authorContainer.innerText = this.author;
 
     // PAGES
-    if (pages === undefined) pages = 0;
-    pagesContainer.innerText = `Number of pages: ${pages}`;
+    if (this.pages === undefined) this.pages = 0;
+    pagesContainer.innerText = `Number of pages: ${this.pages}`;
 
     // ALREADY READ
-    if (read) {
+    if (this.read) {
       readContainer.innerText = "You've already read this book";
     } else {
       readContainer.innerText = "In to-read list";
@@ -128,7 +116,7 @@ const card = (() => {
     toggleReadState.classList.add("toggle-read");
     svgToggleReadState.classList.add("fa-stack","fa-2x", "toggle-read");
 
-    if (read) {
+    if (this.read) {
       svgToggleReadState.appendChild(faBook);
     } else {
       svgToggleReadState.appendChild(faBook);
@@ -156,15 +144,9 @@ const card = (() => {
 
     // WE ADD THE NECESSARY EVENT LISTENERS TO THE FUNCTION buttons
     toggleReadState.addEventListener('click', (e) => {
-      const id = e.currentTarget.dataset.id;
+      this.read = !this.read;
 
-      myLibrary[id].read = !myLibrary[id].read;
-
-      // svgToggleReadState.remove();
-      // svgToggleReadState = toggleReadStateIcon(myLibrary[id].read);
-      // toggleReadState.appendChild(svgToggleReadState);
-
-          if (myLibrary[id].read) {
+          if (this.read) {
             readContainer.innerText = "You've already read this book";
           } else {
             readContainer.innerText = "In to-read list";
@@ -176,10 +158,9 @@ const card = (() => {
       deleteBook(id);
     });
 
-    return card
-  })();
+    return card;
 
-  return {title, author, pages, read, id, card, pagesRead}
+  }
 }
 
 // LOCAL STORAGE
@@ -200,9 +181,9 @@ function createCardFromLocalStorage() {
       let read = localBook.read;
       let id = localBook.id;
 
-      const book = Book(title, author, pages, read, id);
+      const book = new Book(title, author, pages, read, id);
       myLibrary.push(book);
-      BOOKCARDS.appendChild(book.card);
+      BOOKCARDS.appendChild(book.card());
       }
 
       return i
